@@ -1,0 +1,15 @@
+name: Deploy
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy
+        run: |
+          if grep -q BROKEN app.txt; then echo "Deploy failed: app.txt is BROKEN"; exit 1; fi
+          echo "Deployed ${GITHUB_SHA}"
